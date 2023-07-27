@@ -1,7 +1,5 @@
 package com.treppenwitz.recorder;
 
-import android.content.Context;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
@@ -13,6 +11,7 @@ public class PlayerService {
     private MediaPlayer player;
     public File currentFile;
     public ImageView currentIcon;
+
     public void play(View view, File file) {
         currentFile = file;
         currentIcon = (ImageView) view.findViewById(R.id.playerStatusIcon);
@@ -23,6 +22,8 @@ public class PlayerService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        player.setOnCompletionListener(mp -> stop());
 
         player.start();
     }

@@ -1,25 +1,18 @@
 package com.treppenwitz.recorder;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class Recording {
-    private File file;
-    private String displayName;
-    private String duration;
+    private final File file;
+    private final String displayName;
 
-    public Recording (File recordingFile, String display, String duration_time) {
+    public Recording (File recordingFile, String display) {
         file = recordingFile;
         displayName = display;
-        duration = duration_time;
     }
 
     public File getFile() {
         return file;
-    }
-
-    public String getDuration() {
-        return duration;
     }
 
     public String getDisplayName() { return displayName; }

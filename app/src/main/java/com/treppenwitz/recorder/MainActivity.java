@@ -1,19 +1,24 @@
 package com.treppenwitz.recorder;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.search.SearchBar;
 import com.google.android.material.snackbar.Snackbar;
+
+import com.treppenwitz.recorder.utils.PermissionUtility;
 
 import java.util.ArrayList;
 
@@ -29,6 +34,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
+        ExtendedFloatingActionButton recordButton = findViewById(R.id.recordButton);
+        SearchBar searchButton = findViewById(R.id.searchView);
+
+        ViewCompat.setOnApplyWindowInsetsListener(recordButton, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            params.bottomMargin = insets.bottom;
+            v.setLayoutParams(params);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+        ViewCompat.setOnApplyWindowInsetsListener(searchButton, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            params.topMargin = insets.top;
+            v.setLayoutParams(params);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
         content_view = (View) findViewById(R.id.activity_main);
 
         if (!PermissionUtility.isApplicationPermitted(this)) {
@@ -36,15 +64,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         populateRecordingList();
-
-        Button searchButton = findViewById(R.id.searchView);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), SearchActivity.class);
-                startActivity(intent);
-            }
-        });
 
         handleRecordClicked();
     }
@@ -72,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     timer.start();
                 } else {
                     recorderService.stopRecording();
-                    recordings.add(new Recording(recorderService.file, recorderService.file.getName(), "0:00"));
+                    recordings.add(new Recording(recorderService.file, recorderService.file.getName()));
                     timer.stop();
                     button.setText(R.string.record_indicator);
                 }

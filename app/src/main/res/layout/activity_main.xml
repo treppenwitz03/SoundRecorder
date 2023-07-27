@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary"
         android:text="Record Audio"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
@@ -24,11 +25,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="TextView"
-        android:layout_margin="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toBottomOf="@+id/appbarlayout">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recordingListView"
@@ -36,23 +36,22 @@
             android:layout_height="match_parent" />
     </FrameLayout>
 
-    <Button
-        android:id="@+id/searchView"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarlayout"
         android:layout_width="0dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:height="54dp"
-        android:drawableLeft="@drawable/icon_search"
-        android:drawablePadding="24dp"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="8dp"
-        android:gravity="left|center"
-        android:text="Search Recordings"
-        android:textSize="16sp"
-        android:backgroundTint="?attr/colorSurfaceVariant"
-        android:textColor="?attr/colorOnSurfaceVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.search.SearchBar
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Search Recordings"
+            android:contentDescription="What do you want to search"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
