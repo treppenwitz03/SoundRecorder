@@ -1,4 +1,4 @@
-package com.treppenwitz.recorder;
+package com.treppenwitz.recorder.ui;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,6 +18,12 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import com.treppenwitz.recorder.R;
+import com.treppenwitz.recorder.RecorderService;
+import com.treppenwitz.recorder.data.RecordingFileModel;
+import com.treppenwitz.recorder.RecordingsAdapter;
+import com.treppenwitz.recorder.utils.RecordingsRetriever;
+import com.treppenwitz.recorder.Timer;
 import com.treppenwitz.recorder.utils.PermissionUtility;
 
 import java.util.ArrayList;
@@ -27,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public Timer timer;
     public boolean isRecording = false;
 
-    public ArrayList<Recording> recordings;
+    public RecordingsRetriever recordings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateRecordingList() {
         RecyclerView recordingListView = findViewById(R.id.recordingListView);
-        recordings = new RecordingsRetriever();
+        recordings = RecordingsRetriever.getDefault();
         RecordingsAdapter recordingsAdapter = new RecordingsAdapter(recordings);
+        recordings.setAdapter(recordingsAdapter);
         recordingListView.setAdapter(recordingsAdapter);
         recordingListView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -91,9 +98,11 @@ public class MainActivity extends AppCompatActivity {
                     timer.start();
                 } else {
                     recorderService.stopRecording();
-                    recordings.add(new Recording(recorderService.file, recorderService.file.getName()));
+                    recordings.add(new RecordingFileModel(recorderService.file, recorderService.file.getName()));
                     timer.stop();
                     button.setText(R.string.record_indicator);
+                    recordings.reload();
+                    recordings.adapter.notifyDataSetChanged();
                 }
             }
         });
@@ -113,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 Snackbar.make(this, content_view, "Permission Granted", Snackbar.LENGTH_SHORT).show();
+                recordings.reload();
+                recordings.adapter.notifyDataSetChanged();
             } else {
                 Snackbar.make(this, content_view, "Please accept the permissions to continue using this app. ", Snackbar.LENGTH_SHORT).show();
             }

@@ -1,12 +1,12 @@
-package com.treppenwitz.recorder;
+package com.treppenwitz.recorder.data;
 
 import java.io.File;
 
-public class Recording {
+public class RecordingFileModel {
     private final File file;
     private final String displayName;
 
-    public Recording (File recordingFile, String display) {
+    public RecordingFileModel (File recordingFile, String display) {
         file = recordingFile;
         displayName = display;
     }

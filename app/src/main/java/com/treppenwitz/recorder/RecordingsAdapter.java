@@ -1,11 +1,6 @@
 package com.treppenwitz.recorder;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-import android.media.Image;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +10,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.treppenwitz.recorder.data.RecordingFileModel;
+
 import java.io.File;
 import java.util.List;
 
 public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.ViewHolder> {
 
-    private List<Recording> recordingList;
+    private List<RecordingFileModel> recordingList;
     private boolean isPlaying = false;
     private PlayerService playerService;
 
-    public RecordingsAdapter (List<Recording> recordings) {
+    public RecordingsAdapter (List<RecordingFileModel> recordings) {
         recordingList = recordings;
         playerService = new PlayerService();
     }
@@ -43,7 +40,7 @@ public class RecordingsAdapter extends RecyclerView.Adapter<RecordingsAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull RecordingsAdapter.ViewHolder holder, int position) {
-        final Recording recording = recordingList.get(position);
+        final RecordingFileModel recording = recordingList.get(position);
         holder.nameTextView.setText(recording.getDisplayName());
         File recordingFile = recording.getFile();
         holder.itemView.setOnClickListener(new View.OnClickListener() {

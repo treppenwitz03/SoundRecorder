@@ -21,7 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.treppenwitz.recorder.MainActivity;
+import com.treppenwitz.recorder.ui.MainActivity;
 
 public class PermissionUtility {
 
